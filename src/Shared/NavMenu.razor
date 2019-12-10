@@ -1,4 +1,8 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+@inject BlazorLoginDiscord.Data.UserService usrSvc
+
+<div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">BlazorLoginDiscord</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
@@ -12,6 +16,21 @@
                 <span class="oi oi-home" aria-hidden="true"></span> Home
             </NavLink>
         </li>
+        <AuthorizeView>
+            <Authorized>
+                @if (guilds != null)
+                {
+                    @foreach (var guild in guilds)
+                    {
+                        <li class="nav-item px-3">
+                            <a class="nav-link" href="/Guilds/@guild.Id" Match="NavLinkMatch.All">
+                                <span class="oi oi-home" aria-hidden="true"></span> @guild.Name
+                            </a>
+                        </li>
+                    }
+                }
+            </Authorized>
+        </AuthorizeView>
     </ul>
 </div>
 
@@ -23,5 +42,19 @@
     void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+    private BlazorLoginDiscord.Data.UserService.DiscordUserClaim claim;
+    private string token;
+    private List<BlazorLoginDiscord.Data.UserService.Guild> guilds;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (httpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+        {
+            claim = usrSvc.GetInfo(httpContextAccessor.HttpContext);
+            token = await usrSvc.GetTokenAsync(httpContextAccessor.HttpContext);
+            guilds = await usrSvc.GetUserGuildsAsync(httpContextAccessor.HttpContext);
+        }
     }
 }
