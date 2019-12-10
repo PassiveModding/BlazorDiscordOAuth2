@@ -1,0 +1,76 @@
+﻿@page "/Guilds/{Id}"
+@attribute [Authorize] //Ensures the user is authorized prior to accessing the pages content
+@inherits LayoutComponentBase
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+@inject BlazorLoginDiscord.Data.UserService usrSvc
+
+
+<h1>Hello, world 2!</h1>
+
+Welcome to your new app.
+
+<p>
+    Hello, @httpContextAccessor.HttpContext.User.Identity.Name!
+</p>
+
+@if (state == State.Loading)
+{
+    <p><em>Loading Guild...</em></p>
+}
+else if (state == State.Unavailable)
+{
+    <p><em>Invalid Guild.</em></p>
+}
+else
+{
+    <p>
+        Name: @DscGuild.Name
+        Id: @DscGuild.Id
+        Permissions: @DscGuild.Permissions
+    </p>
+}
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+    public BlazorLoginDiscord.Data.UserService.Guild DscGuild { get; set; }
+
+    public State state = State.Loading;
+    public enum State
+    {
+        Loading,
+        Unavailable,
+        Loaded
+    }
+    private bool init = false;
+    protected override async Task OnInitializedAsync()
+    {
+        if (!init)
+        {
+            init = true;
+            if (Id == null)
+            {
+                //TODO: show all available guilds?
+                return;
+            }
+            state = State.Loading;
+            DscGuild = await GetGuild(Id);
+            if (DscGuild == null)
+            {
+                state = State.Unavailable;
+            }
+            else
+            {
+                state = State.Loaded;
+            }
+        }
+    }
+
+    private async Task<BlazorLoginDiscord.Data.UserService.Guild> GetGuild(string id)
+    {
+        var guilds = await usrSvc.GetUserGuildsAsync(httpContextAccessor.HttpContext);
+        var match = guilds.FirstOrDefault(x => x.Id == id);
+        return match;
+    }
+}
