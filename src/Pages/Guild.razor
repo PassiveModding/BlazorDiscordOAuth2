@@ -43,27 +43,23 @@ else
         Unavailable,
         Loaded
     }
-    private bool init = false;
+
     protected override async Task OnInitializedAsync()
     {
-        if (!init)
+        if (Id == null)
         {
-            init = true;
-            if (Id == null)
-            {
-                //TODO: show all available guilds?
-                return;
-            }
-            state = State.Loading;
-            DscGuild = await GetGuild(Id);
-            if (DscGuild == null)
-            {
-                state = State.Unavailable;
-            }
-            else
-            {
-                state = State.Loaded;
-            }
+            //TODO: show all available guilds?
+            return;
+        }
+        state = State.Loading;
+        DscGuild = await GetGuild(Id);
+        if (DscGuild == null)
+        {
+            state = State.Unavailable;
+        }
+        else
+        {
+            state = State.Loaded;
         }
     }
 

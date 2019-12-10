@@ -39,16 +39,12 @@ else
     private BlazorLoginDiscord.Data.UserService.DiscordUserClaim claim;
     private string token;
     private List<BlazorLoginDiscord.Data.UserService.Guild> guilds;
-    private bool init = false;
+    //private bool init = false;
 
     protected override async Task OnInitializedAsync()
     {
-        if (!init)
-        {
-            init = true;
-            claim = usrSvc.GetInfo(httpContextAccessor.HttpContext);
-            token = await usrSvc.GetTokenAsync(httpContextAccessor.HttpContext);
-            guilds = await usrSvc.GetUserGuildsAsync(httpContextAccessor.HttpContext);
-        }
+        claim = usrSvc.GetInfo(httpContextAccessor.HttpContext);
+        token = await usrSvc.GetTokenAsync(httpContextAccessor.HttpContext);
+        guilds = await usrSvc.GetUserGuildsAsync(httpContextAccessor.HttpContext);
     }
 }
