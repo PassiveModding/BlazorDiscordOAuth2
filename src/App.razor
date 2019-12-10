@@ -1,6 +1,7 @@
 ﻿<Router AppAssembly="@typeof(Program).Assembly">
     <Found Context="routeData">
         <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" >
+        <!--The NotAuthorized tag is optional but is currently configured to use the RedirectToLogin page in order to automatically attempt to log a user in if they access an authorized page without logging in.-->
         <NotAuthorized>
             <BlazorLoginDiscord.Pages.RedirectToLogin />
         </NotAuthorized>

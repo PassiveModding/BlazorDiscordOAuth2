@@ -43,6 +43,8 @@ else
         Unavailable,
         Loaded
     }
+
+    //Use OnParametersSet since the guild id can be changed without the page re-rendering the new content otherwise
     protected override async Task OnParametersSetAsync()
     {
         DscGuild = null;
@@ -51,9 +53,11 @@ else
         if (Id == null)
         {
             //TODO: show all available guilds?
+            //Probably not needed since guilds are now populated on the sidebar
             state = State.Unavailable;
             return;
         }
+
         DscGuild = await GetGuild(Id);
         if (DscGuild == null)
         {

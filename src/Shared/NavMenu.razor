@@ -17,7 +17,9 @@
             </NavLink>
         </li>
         <AuthorizeView>
+            <!--Ensure the user can actually access guilds before showing the view-->
             <Authorized>
+                <!--Populate the nav menu with guilds of the user-->
                 @if (guilds != null)
                 {
                     @foreach (var guild in guilds)
@@ -50,6 +52,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        //Don't attempt to query if the user isn't authenticated.
         if (httpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
         {
             claim = usrSvc.GetInfo(httpContextAccessor.HttpContext);

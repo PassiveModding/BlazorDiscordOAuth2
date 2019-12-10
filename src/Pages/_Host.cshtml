@@ -14,6 +14,7 @@
 </head>
 <body>
     <app>
+        <!--RenderMode is set to server rather than prerender. This simplifies a bunch of the logic for the account pages and initializing elements-->
         @(await Html.RenderComponentAsync<App>(RenderMode.Server))
     </app>
 
