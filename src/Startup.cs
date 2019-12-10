@@ -27,7 +27,6 @@ namespace BlazorLoginDiscord
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddHttpContextAccessor();
-            services.AddSingleton<WeatherForecastService>();
             services.AddSingleton<UserService>();
             services.AddAuthentication(opt =>
                 {
