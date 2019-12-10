@@ -43,15 +43,17 @@ else
         Unavailable,
         Loaded
     }
-
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
+        DscGuild = null;
+        state = State.Loading;
+
         if (Id == null)
         {
             //TODO: show all available guilds?
+            state = State.Unavailable;
             return;
         }
-        state = State.Loading;
         DscGuild = await GetGuild(Id);
         if (DscGuild == null)
         {
