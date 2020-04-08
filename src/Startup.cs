@@ -28,6 +28,8 @@ namespace BlazorLoginDiscord
             services.AddServerSideBlazor();
             services.AddHttpContextAccessor();
             services.AddSingleton<UserService>();
+
+            //Configure authentication for the user
             services.AddAuthentication(opt =>
                 {
                     opt.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
