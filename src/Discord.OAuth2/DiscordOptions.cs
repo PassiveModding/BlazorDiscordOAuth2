@@ -16,6 +16,7 @@ namespace Discord.OAuth2
             TokenEndpoint = DiscordDefaults.TokenEndpoint;
             UserInformationEndpoint = DiscordDefaults.UserInformationEndpoint;
             Scope.Add("identify");
+            Scope.Add("email");
 
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id", ClaimValueTypes.UInteger64);
             ClaimActions.MapJsonKey(ClaimTypes.Name, "username", ClaimValueTypes.String);
